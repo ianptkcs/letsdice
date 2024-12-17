@@ -1,17 +1,11 @@
 'use client';
 
-import { User } from '@/interfaces/User';
+import { User } from '@prisma/client';
 import React from 'react';
 
-const defaultUser: User = {
-	name: 'John Doe',
-	email: 'jhondoe@email.com',
-	avatar: 'https://avatars.dicebear.com/api/avataaars/john-doe.svg',
-};
-
 export interface UserContextType {
-	user: User;
-	setUser: React.Dispatch<React.SetStateAction<User>>;
+	user: User | null;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const UserContext = React.createContext<UserContextType | null>(null);
@@ -21,7 +15,7 @@ export default function UserContextProvider({
 }: {
 	children: React.ReactNode;
 }) {
-	const [user, setUser] = React.useState<User>(defaultUser);
+	const [user, setUser] = React.useState<User | null>(null);
 
 	return (
 		<UserContext.Provider value={{ user, setUser }}>

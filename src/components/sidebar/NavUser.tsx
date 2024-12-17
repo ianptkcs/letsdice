@@ -27,6 +27,8 @@ import {
 } from '@/components/ui/sidebar';
 import { useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 export default function NavUser() {
 	const { isMobile } = useSidebar();
@@ -38,7 +40,7 @@ export default function NavUser() {
 
 	const { user, setUser } = userContext;
 
-	return (
+	return user ? (
 		<SidebarMenu>
 			<SidebarMenuItem>
 				<DropdownMenu>
@@ -49,8 +51,8 @@ export default function NavUser() {
 						>
 							<Avatar className='h-8 w-8 rounded-lg'>
 								<AvatarImage
-									src={user.avatar}
-									alt={user.name}
+									src='https://i.pinimg.com/736x/5d/f4/18/5df418287735c4bc97bc8e4100d0a451.jpg'
+									alt={user.username}
 								/>
 								<AvatarFallback className='rounded-lg'>
 									CN
@@ -58,10 +60,10 @@ export default function NavUser() {
 							</Avatar>
 							<div className='grid flex-1 text-left text-sm leading-tight'>
 								<span className='truncate font-semibold'>
-									{user.name}
+									{user.username}
 								</span>
 								<span className='truncate text-xs'>
-									{user.email}
+									{user.username}
 								</span>
 							</div>
 							<ChevronsUpDown className='ml-auto size-4' />
@@ -77,8 +79,8 @@ export default function NavUser() {
 							<div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
 								<Avatar className='h-8 w-8 rounded-lg'>
 									<AvatarImage
-										src={user.avatar}
-										alt={user.name}
+										src='https://i.pinimg.com/736x/5d/f4/18/5df418287735c4bc97bc8e4100d0a451.jpg'
+										alt={user.username}
 									/>
 									<AvatarFallback className='rounded-lg'>
 										CN
@@ -86,10 +88,10 @@ export default function NavUser() {
 								</Avatar>
 								<div className='grid flex-1 text-left text-sm leading-tight'>
 									<span className='truncate font-semibold'>
-										{user.name}
+										{user.username}
 									</span>
 									<span className='truncate text-xs'>
-										{user.email}
+										{user.username}
 									</span>
 								</div>
 							</div>
@@ -125,5 +127,14 @@ export default function NavUser() {
 				</DropdownMenu>
 			</SidebarMenuItem>
 		</SidebarMenu>
+	) : (
+		<div className='flex justify-between gap-4'>
+			<Button className='w-full'>
+				<Link href='/auth?t=signin'>Sign In</Link>
+			</Button>
+			<Button className='w-full'>
+				<Link href='/auth?t=signup'>Sign Up</Link>
+			</Button>
+		</div>
 	);
 }

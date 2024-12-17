@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  firebaseUID String      @id @unique
+  username    String
+  createdAt   DateTime    @default(now())
+  gameMaster  GameMaster?
+  player      Player?
+}
+
+model GameMaster {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userID], references: [firebaseUID])
+  userID    String   @unique
+  Table     Table[]
+}
+
+model Player {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userID], references: [firebaseUID])
+  userID    String   @unique
+  tables    Table[]
+}
+
+model Table {
+  id           String     @id @default(cuid())
+  createdAt    DateTime   @default(now())
+  title        String
+  description  String
+  system       String
+  gmID         String
+  gameMaster   GameMaster @relation(fields: [gameMasterId], references: [id])
+  gameMasterId String
+  players      Player[]
+  playerId     String[]
+}
