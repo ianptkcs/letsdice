@@ -9,7 +9,7 @@ export default function MainLayout({
 	return (
 		<>
 			<AppSidebar />
-			<main className='pt-5 w-full'>{children}</main>;
+			<main className='py-5 w-full'>{children}</main>
 		</>
 	);
 }

@@ -17,7 +17,7 @@ export default function SystemContextProvider({
 	children: React.ReactNode;
 }) {
 	const [system, setSystem] = React.useState<Item>({
-		label: ']',
+		label: '',
 		value: '',
 	});
 

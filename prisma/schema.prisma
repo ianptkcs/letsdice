@@ -15,37 +15,38 @@ datasource db {
 
 model User {
   firebaseUID String      @id @unique
-  username    String
+  slug        String      @unique
   createdAt   DateTime    @default(now())
   gameMaster  GameMaster?
   player      Player?
 }
 
 model GameMaster {
-  id        String   @id @default(cuid())
+  id        Int      @unique @default(autoincrement())
+  username  String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userID], references: [firebaseUID])
-  userID    String   @unique
+  user      User     @relation(fields: [userUID], references: [firebaseUID])
+  userUID   String   @id @unique
   Table     Table[]
 }
 
 model Player {
-  id        String   @id @default(cuid())
+  id        Int      @unique @default(autoincrement())
+  username  String
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userID], references: [firebaseUID])
-  userID    String   @unique
+  user      User     @relation(fields: [userUID], references: [firebaseUID])
+  userUID   String   @id @unique
   tables    Table[]
 }
 
 model Table {
-  id           String     @id @default(cuid())
+  id           Int        @id @default(autoincrement())
   createdAt    DateTime   @default(now())
   title        String
   description  String
   system       String
-  gmID         String
-  gameMaster   GameMaster @relation(fields: [gameMasterId], references: [id])
+  gameMaster   GameMaster @relation(fields: [gameMasterId], references: [userUID])
   gameMasterId String
   players      Player[]
-  playerId     String[]
+  playerID     String[]
 }

@@ -1,16 +1,18 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "firebaseUID" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("firebaseUID")
 );
 
 -- CreateTable
 CREATE TABLE "GameMaster" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "userID" TEXT NOT NULL,
+    "userUID" TEXT NOT NULL,
 
     CONSTRAINT "GameMaster_pkey" PRIMARY KEY ("id")
 );
@@ -19,7 +21,7 @@ CREATE TABLE "GameMaster" (
 CREATE TABLE "Player" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "userID" TEXT NOT NULL,
+    "userUID" TEXT NOT NULL,
 
     CONSTRAINT "Player_pkey" PRIMARY KEY ("id")
 );
@@ -30,9 +32,9 @@ CREATE TABLE "Table" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
-    "gmID" TEXT NOT NULL,
+    "system" TEXT NOT NULL,
     "gameMasterId" TEXT NOT NULL,
-    "playerId" TEXT[],
+    "playerID" TEXT[],
 
     CONSTRAINT "Table_pkey" PRIMARY KEY ("id")
 );
@@ -46,19 +48,25 @@ CREATE TABLE "_PlayerToTable" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "GameMaster_userID_key" ON "GameMaster"("userID");
+CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Player_userID_key" ON "Player"("userID");
+CREATE UNIQUE INDEX "User_firebaseUID_key" ON "User"("firebaseUID");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "GameMaster_userUID_key" ON "GameMaster"("userUID");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Player_userUID_key" ON "Player"("userUID");
 
 -- CreateIndex
 CREATE INDEX "_PlayerToTable_B_index" ON "_PlayerToTable"("B");
 
 -- AddForeignKey
-ALTER TABLE "GameMaster" ADD CONSTRAINT "GameMaster_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "GameMaster" ADD CONSTRAINT "GameMaster_userUID_fkey" FOREIGN KEY ("userUID") REFERENCES "User"("firebaseUID") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Player" ADD CONSTRAINT "Player_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Player" ADD CONSTRAINT "Player_userUID_fkey" FOREIGN KEY ("userUID") REFERENCES "User"("firebaseUID") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Table" ADD CONSTRAINT "Table_gameMasterId_fkey" FOREIGN KEY ("gameMasterId") REFERENCES "GameMaster"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

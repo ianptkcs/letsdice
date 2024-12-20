@@ -22,6 +22,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '@/context/UserContext';
 import prisma from '@/lib/db';
 import createUser from '@/lib/createUser';
+import findUser from '@/lib/findUser';
 
 export default function AuthPage() {
 	const searchParams = useSearchParams();
@@ -47,12 +48,13 @@ export default function AuthPage() {
 			console.log(res);
 			if (res && res.user) {
 				const user = await createUser({ uid: res.user.uid });
+				console.log(user);
 				setUser(user);
 			}
 			setEmail('');
 			setPassword('');
-			console.log('User created');
-			// router.push('/');
+			const previousPage = searchParams.get('from') || '/';
+			router.push(previousPage);
 		} catch (e) {
 			console.error(e);
 		}
@@ -61,17 +63,16 @@ export default function AuthPage() {
 	const handleSignIn = async () => {
 		try {
 			const res = await signInWithEmailAndPassword(email, password);
+			console.log(res);
 			if (res && res.user) {
-				const user = await prisma.user.findUnique({
-					where: {
-						firebaseID: res.user.uid,
-					},
-				});
+				const user = await findUser({ uid: res.user.uid });
+				console.log(user);
 				setUser(user);
 			}
 			setEmail('');
 			setPassword('');
-			router.push('/');
+			const previousPage = searchParams.get('from') || '/';
+			router.push(previousPage);
 		} catch (e) {
 			console.error(e);
 		}
@@ -117,12 +118,17 @@ export default function AuthPage() {
 									placeholder='password'
 									type='password'
 								/>
+
+								<p className='text-sm text-gray-500'>
+									Password must contain at least 6 characters
+								</p>
 							</div>
 						</CardContent>
 						<CardFooter>
 							<Button
 								className='w-full'
 								onClick={handleSignIn}
+								disabled={password.length < 6}
 							>
 								Sign In
 							</Button>
@@ -159,12 +165,16 @@ export default function AuthPage() {
 									placeholder='password'
 									type='password'
 								/>
+								<p className='text-sm text-gray-500'>
+									Password must contain at least 6 characters
+								</p>
 							</div>
 						</CardContent>
 						<CardFooter>
 							<Button
 								className='w-full'
 								onClick={handleSignUp}
+								disabled={password.length < 6}
 							>
 								Sign Up
 							</Button>

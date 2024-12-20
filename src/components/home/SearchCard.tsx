@@ -15,7 +15,6 @@ export default function SearchCard() {
 		<Card className='w-full'>
 			<CardHeader>
 				<CardTitle>Find TTRPG Tables</CardTitle>
-				<CardDescription>100 tables found</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<SystemContextProvider>

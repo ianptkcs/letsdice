@@ -6,8 +6,8 @@ import randomUsername from './randomUsername';
 export default async function createUser({ uid }: { uid: string }) {
 	return await prisma.user.create({
 		data: {
-			username: randomUsername(uid),
-			firebaseID: uid,
+			firebaseUID: uid,
+			slug: randomUsername(uid),
 		},
 	});
 }

@@ -24,10 +24,12 @@ export function ComboBox({
 	items,
 	selectedItem,
 	setSelectedItem,
+	keyword,
 }: {
 	items: Item[];
 	selectedItem: Item;
 	setSelectedItem: React.Dispatch<React.SetStateAction<Item>>;
+	keyword: string;
 }) {
 	const [open, setOpen] = React.useState(false);
 
@@ -45,14 +47,14 @@ export function ComboBox({
 				>
 					{selectedItem.value
 						? items.find((item) => item === selectedItem)?.label
-						: 'Select item...'}
+						: `Select ${keyword}`}
 					<ChevronsUpDown className='opacity-50' />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className='w-[200px] p-0'>
 				<Command>
 					<CommandInput
-						placeholder='Search item...'
+						placeholder={`Search ${keyword}`}
 						className='h-9'
 					/>
 					<CommandList>

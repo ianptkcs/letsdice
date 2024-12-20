@@ -66,7 +66,7 @@ const items = [
 	},
 ];
 
-export default async function AppSidebar() {
+export default function AppSidebar() {
 	return (
 		<Sidebar>
 			<SidebarHeader>
