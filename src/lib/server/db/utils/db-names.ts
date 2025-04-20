@@ -5,8 +5,8 @@ export enum DBModels {
     GM = "gm",
     SCHEDULE = "schedule",
     FORM = "form",
-    CUSTOM_ANSWER = "custom_answer",
-    DEFAULT_ANSWER = "default_answer",
+    CUSTOM_ANSWER = "customAnswer",
+    DEFAULT_ANSWER = "defaultAnswer",
     APPLICATION = "application",
 }
 
@@ -14,18 +14,18 @@ export enum DBEnums {
     GENDER = "gender",
     SYSTEM = "system",
     GENRE = "genre",
-    TABLE_STATUS = "table_status",
-    TABLE_TYPE = "table_type",
-    APPLICATION_STATUS = "application_status",
-    FORM_STATUS = "form_status",
-    DEFAULT_QUESTION = "default_question",
+    TABLE_STATUS = "tableStatus",
+    TABLE_TYPE = "tableType",
+    APPLICATION_STATUS = "applicationStatus",
+    FORM_STATUS = "formStatus",
+    DEFAULT_QUESTION = "defaultQuestion",
     WEEKDAY = "weekday",
 }
 
 export enum DBJoins {
-    SCHEDULE_TO_TABLE = "schedule_to_table",
-    SCHEDULE_TO_PLAYER = "schedule_to_player",
-    TABLE_TO_USERS = "table_to_users",
+    SCHEDULE_TO_TABLE = "scheduleToTable",
+    SCHEDULE_TO_PLAYER = "scheduleToPlayer",
+    TABLE_TO_USERS = "tableToUsers",
 }
 
 export enum systemLabel {

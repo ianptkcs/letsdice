@@ -1,0 +1,919 @@
+{
+  "id": "269ac30b-143e-4f34-b817-324820506b56",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "schedule.schedule": {
+      "name": "schedule",
+      "schema": "schedule",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "weekday": {
+          "name": "weekday",
+          "type": "weekday",
+          "typeSchema": "schedule",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hours": {
+          "name": "hours",
+          "type": "integer[]",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "schedule.scheduleToPlayer": {
+      "name": "scheduleToPlayer",
+      "schema": "schedule",
+      "columns": {
+        "scheduleId": {
+          "name": "scheduleId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "playerId": {
+          "name": "playerId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "scheduleToPlayer_scheduleId_schedule_id_fk": {
+          "name": "scheduleToPlayer_scheduleId_schedule_id_fk",
+          "tableFrom": "scheduleToPlayer",
+          "tableTo": "schedule",
+          "schemaTo": "schedule",
+          "columnsFrom": [
+            "scheduleId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "scheduleToPlayer_playerId_player_uid_fk": {
+          "name": "scheduleToPlayer_playerId_player_uid_fk",
+          "tableFrom": "scheduleToPlayer",
+          "tableTo": "player",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "playerId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "scheduleToPlayer_scheduleId_playerId_pk": {
+          "name": "scheduleToPlayer_scheduleId_playerId_pk",
+          "columns": [
+            "scheduleId",
+            "playerId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "schedule.scheduleToTable": {
+      "name": "scheduleToTable",
+      "schema": "schedule",
+      "columns": {
+        "scheduleId": {
+          "name": "scheduleId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tableId": {
+          "name": "tableId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "scheduleToTable_scheduleId_schedule_id_fk": {
+          "name": "scheduleToTable_scheduleId_schedule_id_fk",
+          "tableFrom": "scheduleToTable",
+          "tableTo": "schedule",
+          "schemaTo": "schedule",
+          "columnsFrom": [
+            "scheduleId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "scheduleToTable_tableId_table_id_fk": {
+          "name": "scheduleToTable_tableId_table_id_fk",
+          "tableFrom": "scheduleToTable",
+          "tableTo": "table",
+          "schemaTo": "table",
+          "columnsFrom": [
+            "tableId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "scheduleToTable_scheduleId_tableId_pk": {
+          "name": "scheduleToTable_scheduleId_tableId_pk",
+          "columns": [
+            "scheduleId",
+            "tableId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.application": {
+      "name": "application",
+      "schema": "table",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "formId": {
+          "name": "formId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "playerId": {
+          "name": "playerId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "applicationStatus",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "application_formId_form_tableId_fk": {
+          "name": "application_formId_form_tableId_fk",
+          "tableFrom": "application",
+          "tableTo": "form",
+          "schemaTo": "table",
+          "columnsFrom": [
+            "formId"
+          ],
+          "columnsTo": [
+            "tableId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "application_playerId_player_uid_fk": {
+          "name": "application_playerId_player_uid_fk",
+          "tableFrom": "application",
+          "tableTo": "player",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "playerId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.customAnswer": {
+      "name": "customAnswer",
+      "schema": "table",
+      "columns": {
+        "applicationId": {
+          "name": "applicationId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "question": {
+          "name": "question",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answer": {
+          "name": "answer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "customAnswer_applicationId_application_id_fk": {
+          "name": "customAnswer_applicationId_application_id_fk",
+          "tableFrom": "customAnswer",
+          "tableTo": "application",
+          "schemaTo": "table",
+          "columnsFrom": [
+            "applicationId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "customAnswer_applicationId_question_pk": {
+          "name": "customAnswer_applicationId_question_pk",
+          "columns": [
+            "applicationId",
+            "question"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.defaultAnswer": {
+      "name": "defaultAnswer",
+      "schema": "table",
+      "columns": {
+        "playerId": {
+          "name": "playerId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "question": {
+          "name": "question",
+          "type": "defaultQuestion",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "answer": {
+          "name": "answer",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "defaultAnswer_playerId_player_uid_fk": {
+          "name": "defaultAnswer_playerId_player_uid_fk",
+          "tableFrom": "defaultAnswer",
+          "tableTo": "player",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "playerId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "defaultAnswer_playerId_question_pk": {
+          "name": "defaultAnswer_playerId_question_pk",
+          "columns": [
+            "playerId",
+            "question"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.form": {
+      "name": "form",
+      "schema": "table",
+      "columns": {
+        "tableId": {
+          "name": "tableId",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "introduction": {
+          "name": "introduction",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "defaultQuestions": {
+          "name": "defaultQuestions",
+          "type": "defaultQuestion[]",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "customQuestions": {
+          "name": "customQuestions",
+          "type": "text[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "formStatus",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "form_tableId_table_id_fk": {
+          "name": "form_tableId_table_id_fk",
+          "tableFrom": "form",
+          "tableTo": "table",
+          "schemaTo": "table",
+          "columnsFrom": [
+            "tableId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.table": {
+      "name": "table",
+      "schema": "table",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "gmId": {
+          "name": "gmId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "banner": {
+          "name": "banner",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "system": {
+          "name": "system",
+          "type": "system",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "vacancies": {
+          "name": "vacancies",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "minAge": {
+          "name": "minAge",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "genres": {
+          "name": "genres",
+          "type": "genre[]",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "startDate": {
+          "name": "startDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "type": {
+          "name": "type",
+          "type": "tableType",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'campaign'"
+        },
+        "status": {
+          "name": "status",
+          "type": "tableStatus",
+          "typeSchema": "table",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'open'"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "table_gmId_gm_uid_fk": {
+          "name": "table_gmId_gm_uid_fk",
+          "tableFrom": "table",
+          "tableTo": "gm",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "gmId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "table.tableToUsers": {
+      "name": "tableToUsers",
+      "schema": "table",
+      "columns": {
+        "tableId": {
+          "name": "tableId",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "tableToUsers_tableId_table_id_fk": {
+          "name": "tableToUsers_tableId_table_id_fk",
+          "tableFrom": "tableToUsers",
+          "tableTo": "table",
+          "schemaTo": "table",
+          "columnsFrom": [
+            "tableId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "tableToUsers_userId_gm_uid_fk": {
+          "name": "tableToUsers_userId_gm_uid_fk",
+          "tableFrom": "tableToUsers",
+          "tableTo": "gm",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "uid"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "tableToUsers_tableId_userId_pk": {
+          "name": "tableToUsers_tableId_userId_pk",
+          "columns": [
+            "tableId",
+            "userId"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "user.gm": {
+      "name": "gm",
+      "schema": "user",
+      "columns": {
+        "uid": {
+          "name": "uid",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "systems": {
+          "name": "systems",
+          "type": "system[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "genres": {
+          "name": "genres",
+          "type": "genre[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "gm_uid_user_supId_fk": {
+          "name": "gm_uid_user_supId_fk",
+          "tableFrom": "gm",
+          "tableTo": "user",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "uid"
+          ],
+          "columnsTo": [
+            "supId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "user.player": {
+      "name": "player",
+      "schema": "user",
+      "columns": {
+        "uid": {
+          "name": "uid",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "systems": {
+          "name": "systems",
+          "type": "system[]",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "genres": {
+          "name": "genres",
+          "type": "genre[]",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "player_uid_user_supId_fk": {
+          "name": "player_uid_user_supId_fk",
+          "tableFrom": "player",
+          "tableTo": "user",
+          "schemaTo": "user",
+          "columnsFrom": [
+            "uid"
+          ],
+          "columnsTo": [
+            "supId"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "user.user": {
+      "name": "user",
+      "schema": "user",
+      "columns": {
+        "supId": {
+          "name": "supId",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userName": {
+          "name": "userName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "realName": {
+          "name": "realName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "aboutMe": {
+          "name": "aboutMe",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthDate": {
+          "name": "birthDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "gender",
+          "typeSchema": "user",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_slug_unique": {
+          "name": "user_slug_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "slug"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.genre": {
+      "name": "genre",
+      "schema": "public",
+      "values": [
+        "Fantasy",
+        "SciFi",
+        "Horror",
+        "Cyberpunk",
+        "Superhero",
+        "Western",
+        "PostApocalyptic",
+        "Historical",
+        "Mystery",
+        "Thriller",
+        "Romance",
+        "Comedy",
+        "Drama",
+        "Action",
+        "Adventure"
+      ]
+    },
+    "public.system": {
+      "name": "system",
+      "schema": "public",
+      "values": [
+        "own",
+        "coc",
+        "dnd",
+        "op"
+      ]
+    },
+    "schedule.weekday": {
+      "name": "weekday",
+      "schema": "schedule",
+      "values": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "table.applicationStatus": {
+      "name": "applicationStatus",
+      "schema": "table",
+      "values": [
+        "pending",
+        "accepted",
+        "rejected"
+      ]
+    },
+    "table.defaultQuestion": {
+      "name": "defaultQuestion",
+      "schema": "table",
+      "values": [
+        "rpg_definition",
+        "rpg_experience",
+        "favorite_rpg_element",
+        "character_creation",
+        "rpg_moment",
+        "memorable_character",
+        "rpg_campaign",
+        "rpg_challenge",
+        "rpg_system_preference",
+        "rpg_homebrew",
+        "good_gm",
+        "good_player",
+        "expectations",
+        "character_death",
+        "dislike",
+        "like",
+        "sensible_content",
+        "about_homebrew",
+        "about_rules",
+        "fav_culture_character",
+        "fav_songs",
+        "fav_song_style",
+        "character_concept"
+      ]
+    },
+    "table.formStatus": {
+      "name": "formStatus",
+      "schema": "table",
+      "values": [
+        "open",
+        "closed",
+        "archived"
+      ]
+    },
+    "table.tableStatus": {
+      "name": "tableStatus",
+      "schema": "table",
+      "values": [
+        "open",
+        "ongoing",
+        "finished"
+      ]
+    },
+    "table.tableType": {
+      "name": "tableType",
+      "schema": "table",
+      "values": [
+        "campaign",
+        "oneshot"
+      ]
+    },
+    "user.gender": {
+      "name": "gender",
+      "schema": "user",
+      "values": [
+        "male",
+        "female",
+        "nonbinary",
+        "other"
+      ]
+    }
+  },
+  "schemas": {
+    "schedule": "schedule",
+    "table": "table",
+    "user": "user"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
