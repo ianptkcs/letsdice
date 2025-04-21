@@ -10,9 +10,9 @@ import postgres from "postgres";
 config({ path: "./.env" });
 
 const main = async () => {
-    if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
+    if (!process.env.POSTGRES_URL) throw new Error("POSTGRES_URL is not set");
 
-    const client = postgres(process.env.DATABASE_URL, { prepare: false });
+    const client = postgres(process.env.POSTGRES_URL, { prepare: false });
     const db = drizzle(client, { casing: "snake_case" });
 };
 
