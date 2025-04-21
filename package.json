@@ -10,7 +10,7 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"vercel-build": "bunx drizzle-kit migrate && bunx drizzle-kit push && bun run build",
+		"vercel-build": "bunx drizzle-kit migrate && bunx drizzle-kit push --force && bun run build",
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio"
