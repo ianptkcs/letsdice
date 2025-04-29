@@ -1,0 +1,2 @@
+# print('\n'.join(' ' * (n - i) + '*'.join('*' * i for _ in range(2)) for n in [int(input().strip())] for i in [n - abs(j) for j in range(-int(n), int(n) + 1)]))
+print(''.join(chr(ord('A') + i) for i in range(int(input().strip()))))
